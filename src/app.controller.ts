@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, HttpCode, Logger, Post } from '@nestjs/common';
 
-@Controller()
+@Controller('orders')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  private readonly logger = new Logger(AppController.name);
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post()
+  @HttpCode(201)
+  receiveOrder(@Body() order: unknown): { received: true } {
+    this.logger.log(`Received order: ${JSON.stringify(order)}`);
+    return { received: true };
   }
 }
